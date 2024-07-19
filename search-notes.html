@@ -1,0 +1,84 @@
+<!-- search-notes.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Your Notes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu Features</h2>
+        <ul>
+            <li><a href="create-note.html">Create a new note</a></li>
+            <li><a href="search-notes.html">Search in your notes</a></li>
+            <li><a href="label-view.html">Label View</a></li>
+            <li><a href="#">Archived Notes</a></li>
+            <li><a href="#">One note can have multiple tags</a></li>
+            <li><a href="#">Toggle between background colors</a></li>
+            <li><a href="#">Trash Notes</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <h2>Search Your Notes</h2>
+
+        <!-- Search input -->
+        <input type="text" id="searchInput" placeholder="Search by tags">
+        
+        <div id="notesList" class="notes-list">
+            <!-- Notes will be dynamically added here -->
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Function to load and display notes from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const notesList = document.getElementById('notesList');
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+
+            // Function to display notes
+            function displayNotes(filteredNotes) {
+                // Clear existing notes
+                notesList.innerHTML = '';
+
+                // Display filtered notes
+                filteredNotes.forEach(note => {
+                    const noteElement = document.createElement('div');
+                    noteElement.classList.add('note');
+                    noteElement.style.backgroundColor = note.backgroundColor;
+
+                    // Constructing the note HTML structure
+                    noteElement.innerHTML = `
+                        <div class="note-content">
+                            <h3>${note.title}</h3>
+                            <p>${note.content}</p>
+                            <p><strong>Tags:</strong> ${note.tags.join(', ')}</p>
+                        </div>
+                    `;
+                    notesList.appendChild(noteElement);
+                });
+            }
+
+            // Display all notes initially
+            displayNotes(notes);
+
+            // Search functionality based on tags
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = searchInput.value.trim().toLowerCase();
+
+                // Filter notes based on search term
+                const filteredNotes = notes.filter(note => {
+                    return note.tags.some(tag => tag.toLowerCase().includes(searchTerm));
+                });
+
+                // Display filtered notes
+                displayNotes(filteredNotes);
+            });
+        });
+    </script>
+</body>
+</html>

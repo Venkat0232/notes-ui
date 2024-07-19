@@ -1,0 +1,56 @@
+<!-- create-note.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Add this inside the <head> tag -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-9paUimH7Gc3U4UKF9zLczr6iL3nVjqRF4bGeWwFgzdSfAG0sYmw6QZx/QFYN2+JpFvBxG7ltdKbTHdJr8f1IVQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a New Note</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu Features</h2>
+        <ul>
+            <li><a href="create-note.html">Create a new note</a></li>
+            <li><a href="search-notes.html">Search in your notes</a></li>
+            <li><a href="label-view.html">Label View</a></li>
+            <li><a href="#">Archived Notes</a></li>
+            <li><a href="#">One note can have multiple tags</a></li>
+            <li><a href="#">Toggle between background colors</a></li>
+            <li><a href="#">Trash Notes</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <h2>Create a New Note</h2>
+        <form id="createNoteForm">
+            <label for="noteTitle">Note Title:</label>
+            <input type="text" id="noteTitle" name="noteTitle" required>
+
+            <label for="noteContent">Note Content:</label>
+            <textarea id="noteContent" name="noteContent" rows="8" required></textarea>
+
+            <label for="noteTags">Tags (up to 9 tags, comma-separated):</label>
+            <input type="text" id="noteTags" name="noteTags">
+
+            <label for="noteBackgroundColor">Note Background Color:</label>
+            <select id="noteBackgroundColor" name="noteBackgroundColor">
+                <option value="default">Default</option>
+                <option value="#f0f0f0">Light Gray</option>
+                <option value="#ffc107">Yellow</option>
+                <option value="#4caf50">Green</option>
+                <option value="#2196f3">Blue</option>
+                <option value="#f44336">Red</option>
+                <option value="#9c27b0">Purple</option>
+            </select>
+
+            <button type="submit">Save Note</button>
+        </form>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

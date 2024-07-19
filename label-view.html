@@ -1,0 +1,170 @@
+<!-- label-view.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Add this inside the <head> tag -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-9paUimH7Gc3U4UKF9zLczr6iL3nVjqRF4bGeWwFgzdSfAG0sYmw6QZx/QFYN2+JpFvBxG7ltdKbTHdJr8f1IVQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Label View - Notes</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .tag-list {
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .tag:hover {
+            background-color: #0056b3;
+        }
+
+        .notes-list {
+            display: grid;
+            grid-gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+
+        .note {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .note h3 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .note p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .note-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu Features</h2>
+        <ul>
+            <li><a href="create-note.html">Create a new note</a></li>
+            <li><a href="search-notes.html">Search in your notes</a></li>
+            <li><a href="label-view.html">Label View</a></li>
+            <li><a href="#">Archived Notes</a></li>
+            <li><a href="#">One note can have multiple tags</a></li>
+            <li><a href="#">Toggle between background colors</a></li>
+            <li><a href="#">Trash Notes</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <h2>Label View - Notes</h2>
+
+        <!-- Container for displaying tags -->
+        <div id="labelView" class="label-view">
+            <h3>Tags</h3>
+            <div id="tagList" class="tag-list">
+                <!-- Tags will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Container for displaying notes -->
+        <div id="notesList" class="notes-list">
+            <!-- Notes will be dynamically added here based on selected tag -->
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const labelView = document.getElementById('labelView');
+            const notesList = document.getElementById('notesList');
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+
+            // Function to display notes based on selected tag
+            function displayNotesByTag(tag) {
+                // Filter notes based on the selected tag
+                const filteredNotes = notes.filter(note => note.tags.includes(tag));
+
+                // Clear existing notes
+                notesList.innerHTML = '';
+
+                // Display filtered notes
+                filteredNotes.forEach(note => {
+                    const noteElement = document.createElement('div');
+                    noteElement.classList.add('note');
+                    noteElement.style.backgroundColor = note.backgroundColor;
+
+                    // Constructing the note HTML structure
+                    noteElement.innerHTML = `
+                        <div class="note-content">
+                            <h3>${note.title}</h3>
+                            <p>${note.content}</p>
+                            <p><strong>Tags:</strong> ${note.tags.join(', ')}</p>
+                        </div>
+                    `;
+                    notesList.appendChild(noteElement);
+                });
+            }
+
+            // Function to display tags for filtering
+            function displayTags() {
+                // Collect all tags from notes
+                let allTags = [];
+                notes.forEach(note => {
+                    allTags = allTags.concat(note.tags);
+                });
+
+                // Remove duplicate tags
+                const uniqueTags = [...new Set(allTags)];
+
+                // Display tags as clickable filters
+                uniqueTags.forEach(tag => {
+                    const tagElement = document.createElement('span');
+                    tagElement.classList.add('tag');
+                    tagElement.textContent = tag;
+                    tagElement.addEventListener('click', function() {
+                        displayNotesByTag(tag);
+                    });
+                    labelView.querySelector('#tagList').appendChild(tagElement);
+                });
+            }
+
+            // Display all tags initially
+            displayTags();
+        });
+    </script>
+</body>
+</html>
